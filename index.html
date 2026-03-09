@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12 الإخبارية | الخبر بين لحظة وضحاها</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+    
+    <style>
+        :root { --brand-red: #e30613; --brand-blue: #0056b3; --dark-bg: #11141a; }
+        body { font-family: 'Cairo', sans-serif; background-color: var(--dark-bg); color: #fff; margin: 0; padding-bottom: 30px; }
+        
+        /* هيدر 12 طبق الأصل */
+        header { background-color: #1a1e26; padding: 12px 15px; position: sticky; top: 0; z-index: 1000; border-bottom: 3px solid var(--brand-red); }
+        .header-top { display: flex; justify-content: space-between; align-items: center; }
+        .logo-12 { display: flex; align-items: center; cursor: pointer; text-decoration: none; }
+        .logo-num { font-size: 38px; font-weight: 900; color: #fff; }
+        .logo-dot { color: var(--brand-red); font-size: 45px; margin-right: -4px; line-height: 0; }
+        
+        nav { display: flex; gap: 20px; overflow-x: auto; padding: 10px 0; scrollbar-width: none; border-top: 1px solid rgba(255,255,255,0.05); }
+        nav::-webkit-scrollbar { display: none; }
+        nav a { color: #fff; text-decoration: none; font-size: 14px; font-weight: bold; white-space: nowrap; opacity: 0.8; }
+        nav a.active { opacity: 1; border-bottom: 3px solid var(--brand-red); padding-bottom: 5px; }
+
+        /* حاوية الإعلانات الموزعة */
+        .ad-row { display: flex; justify-content: center; margin: 15px 0; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; }
+
+        /* شبكة الفيديوهات الاحترافية */
+        .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 10px 15px; }
+        .v-card { cursor: pointer; background: transparent; transition: 0.3s; }
+        .v-thumb { position: relative; width: 100%; aspect-ratio: 16/10; border-radius: 6px; overflow: hidden; background: #000; }
+        video { width: 100%; height: 100%; object-fit: cover; }
+        .v-badge { position: absolute; top: 0; left: 0; background: var(--brand-blue); color: #fff; font-size: 11px; padding: 3px 8px; font-weight: 900; border-bottom-right-radius: 6px; }
+        .play-overlay { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.6); border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; }
+        
+        .v-title { font-size: 13px; font-weight: 700; margin: 10px 0; line-height: 1.4; color: #fff; height: 38px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        
+        /* أزرار التواصل الربحية */
+        .social-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .s-link { padding: 8px; font-size: 11px; text-align: center; border-radius: 6px; background: #1a1e26; border: 1px solid #333; color: #fff; text-decoration: none; font-weight: bold; }
+
+        /* لوحة التحكم السري */
+        #admin { display: none; background: #000; padding: 25px; border: 2px dashed var(--brand-red); margin: 15px; border-radius: 12px; }
+        .input-box { width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 6px; border: 1px solid #333; background: #222; color: #fff; box-sizing: border-box; }
+        .post-btn { width: 100%; padding: 15px; background: var(--brand-red); color: #fff; border: none; font-weight: bold; border-radius: 6px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-top">
+        <div style="color:#888; font-size: 20px;">🔍</div>
+        <div class="logo-12" onclick="openAd()">
+            <span class="logo-num">12</span><span class="logo-dot">.</span>
+        </div>
+        <input type="password" style="width:25px; opacity:0; cursor:default;" oninput="if(this.value=='1234') document.getElementById('admin').style.display='block'">
+    </div>
+    <nav>
+        <a href="#" class="active" onclick="openAd()">الرئيسية</a>
+        <a href="#" onclick="openAd()">الإخبارية</a>
+        <a href="#" onclick="openAd()">المنوعات</a>
+        <a href="#" onclick="openAd()">ملاعب</a>
+        <a href="#" onclick="openAd()">الوثائقية</a>
+    </nav>
+</header>
+
+<div class="ad-row">
+    <ins style="width: 300px;height:250px" data-width="300" data-height="250" class="g2fb0b4c321" data-domain="//data527.click" data-affquery="/e3435b2a507722939b6f/2fb0b4c321/?placementName=default">
+        <script src="//data527.click/js/responsive.js" async></script>
+    </ins>
+</div>
+
+<div id="admin">
+    <h3 style="color:var(--brand-red); margin-top:0;">🚀 لوحة نشر 12 ULTRA</h3>
+    <input type="text" id="vTitle" class="input-box" placeholder="اكتب عنوان الخبر هنا...">
+    <input type="file" id="vFile" class="input-box" accept="video/*">
+    <button class="post-btn" onclick="uploadContent()">نشر الفيديو الآن</button>
+    <p id="upStatus" style="text-align:center; font-size:12px; margin-top:10px;"></p>
+</div>
+
+<div class="video-grid" id="mainFeed">
+    </div>
+
+<script type="text/javascript" src="//data527.click/129ba2282fccd3392338/b1a648bd38/?placementName=default"></script>
+
+<script>
+    const firebaseConfig = { databaseURL: "https://forg-c693e-default-rtdb.firebaseio.com/" };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    
+    // رابط الإعلان المباشر الخاص بك
+    const MY_AD = "https://data527.click/21330bf1d025d41336e6/57154ac610/?placementName=default";
+
+    function openAd(target) {
+        window.open(MY_AD, '_blank');
+        if(target) setTimeout(() => window.open(target, '_blank'), 800);
+    }
+
+    async function uploadContent() {
+        const title = document.getElementById('vTitle').value;
+        const file = document.getElementById('vFile').files[0];
+        if(!title || !file) return alert("أكمل البيانات أولاً");
+
+        document.getElementById('upStatus').innerText = "جاري الرفع سحابياً... انتظر ثواني";
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', 'update_vk');
+
+        try {
+            const res = await fetch('https://api.cloudinary.com/v1_1/dfscughol/video/upload', { method: 'POST', body: formData });
+            const data = await res.json();
+            if(data.secure_url) {
+                db.ref('final_pro_12').push({ title: title, url: data.secure_url });
+                location.reload();
+            }
+        } catch (e) { alert("فشل الرفع، تحقق من الاتصال"); }
+    }
+
+    db.ref('final_pro_12').on('child_added', (snap) => {
+        const p = snap.val();
+        const html = `
+            <div class="v-card">
+                <div class="v-thumb" onclick="openAd()">
+                    <div class="v-badge">12</div>
+                    <video src="${p.url}" muted onmouseover="this.play()" onmouseout="this.pause()"></video>
+                    <div class="play-overlay">▶</div>
+                </div>
+                <div class="v-title">${p.title}</div>
+                <div class="social-bar">
+                    <a href="#" class="s-link" onclick="openAd('https://t.me/kg33d')">Telegram</a>
+                    <a href="#" class="s-link" onclick="openAd('https://www.instagram.com/go1d8k?igsh=aDVhcjM1dXhjNTkz')">Instagram</a>
+                </div>
+            </div>
+        `;
+        document.getElementById('mainFeed').insertAdjacentHTML('afterbegin', html);
+    });
+</script>
+
+</body>
+</html>
